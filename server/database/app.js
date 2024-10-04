@@ -118,6 +118,71 @@ app.post('/insert_review', express.raw({ type: '*/*' }), async (req, res) => {
   }
 });
 
+// Express route to update a review
+app.put('/update_review/:id', async (req, res) => {
+  try {
+    const data = req.body;
+
+    // Basic validation
+    if (!data.name || !data.dealership || !data.review) {
+      return res.status(400).json({ error: 'Missing required fields: name, dealership, review' });
+    }
+
+    const updatedReview = await Reviews.findByIdAndUpdate(req.params.id, data, { new: true });
+    if (!updatedReview) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+    res.json(updatedReview);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error updating review' });
+  }
+});
+
+// Express route to delete a review
+app.delete('/delete_review/:id', async (req, res) => {
+  try {
+    const deletedReview = await Reviews.findByIdAndDelete(req.params.id);
+    if (!deletedReview) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+    res.json({ message: 'Review deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error deleting review' });
+  }
+});
+
+// Express route to update a dealership
+app.put('/update_dealer/:id', async (req, res) => {
+  try {
+    const data = req.body;
+
+    const updatedDealer = await Dealerships.findByIdAndUpdate(req.params.id, data, { new: true });
+    if (!updatedDealer) {
+      return res.status(404).json({ error: 'Dealer not found' });
+    }
+    res.json(updatedDealer);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error updating dealer' });
+  }
+});
+
+// Express route to delete a dealership
+app.delete('/delete_dealer/:id', async (req, res) => {
+  try {
+    const deletedDealer = await Dealerships.findByIdAndDelete(req.params.id);
+    if (!deletedDealer) {
+      return res.status(404).json({ error: 'Dealer not found' });
+    }
+    res.json({ message: 'Dealer deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error deleting dealer' });
+  }
+});
+
 // Start the Express server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
