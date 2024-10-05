@@ -43,4 +43,4 @@ class CarModel(models.Model):
 
     def __str__(self):
         # String representation of CarMake and CarModel
-        return f"{self.car_make.name} {self.name}"  
+        return f"{self.car_make.name} {self.name}"
