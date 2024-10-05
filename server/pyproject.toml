@@ -1,0 +1,21 @@
+[tool.black]
+line-length = 88
+target-version = ['py39']  # Adjust based on your Python version
+include = '\.pyi?$'
+exclude = '''
+/(
+    .git
+  | __pycache__
+  | build
+  | dist
+  | node_modules
+  | djangoenv
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_third_party = ["django", "rest_framework"]  # Add your third-party packages here
+sections = "FUTURE,STDLIB,THIRDPARTY,DJANGO,LOCALFOLDER"
+skip = ["node_modules", "djangoenv"]
