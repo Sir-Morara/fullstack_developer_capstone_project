@@ -1,5 +1,5 @@
 {
-    "esversion": 6,
+    "esversion": 8,
     "mocha": true, // Optional: if you're using Mocha for testing
     "node": true,  // Optional: if you're running the code in Node.js
     "browser": true, // Optional: if you're running the code in a browser

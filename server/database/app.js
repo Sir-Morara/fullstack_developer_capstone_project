@@ -2,35 +2,38 @@ const express = require('express');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const cors = require('cors');
+const bodyParser = require('body-parser'); // Explicitly require body-parser
 const app = express();
 const port = 3030;
 
 app.use(cors());
-app.use(require('body-parser').urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json()); // Enable JSON parsing for request bodies
 
+// Read JSON data
 const reviews_data = JSON.parse(fs.readFileSync("reviews.json", 'utf8'));
 const dealerships_data = JSON.parse(fs.readFileSync("dealerships.json", 'utf8'));
 
-mongoose.connect("mongodb://mongo_db:27017/", { 'dbName': 'dealershipsDB' });
-
+// Connect to MongoDB with error handling
+mongoose.connect("mongodb://mongo_db:27017/", { dbName: 'dealershipsDB' })
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.error("MongoDB connection error:", err));
 
 const Reviews = require('./review');
-
 const Dealerships = require('./dealership');
 
-try {
-  Reviews.deleteMany({}).then(() => {
-    Reviews.insertMany(reviews_data['reviews']);
-  });
-  Dealerships.deleteMany({}).then(() => {
-    Dealerships.insertMany(dealerships_data['dealerships']);
-  });
-
-} catch (error) {
-  console.error('Error during data insertion:', error);
-}
-
+// Initialize Database: Delete existing data and insert new data
+(async () => {
+  try {
+    await Reviews.deleteMany({});
+    await Reviews.insertMany(reviews_data.reviews); // Changed bracket notation to dot notation
+    await Dealerships.deleteMany({});
+    await Dealerships.insertMany(dealerships_data.dealerships); // Changed bracket notation to dot notation
+    console.log('Data insertion completed successfully.');
+  } catch (error) {
+    console.error('Error during data insertion:', error);
+  }
+})();
 
 // Express route to home
 app.get('/', async (req, res) => {
@@ -50,7 +53,7 @@ app.get('/fetchReviews', async (req, res) => {
 // Express route to fetch reviews by a particular dealer
 app.get('/fetchReviews/dealer/:id', async (req, res) => {
   try {
-    const documents = await Reviews.find({ dealership: req.params.id });
+    const documents = await Reviews.find({ dealership: req.params.id }); // Changed bracket notation to dot notation if applicable
     res.json(documents);
   } catch (error) {
     res.status(500).json({ error: 'Error fetching documents' });
@@ -70,7 +73,7 @@ app.get('/fetchDealers', async (req, res) => {
 // Express route to fetch Dealers by a particular state
 app.get('/fetchDealers/state/:state', async (req, res) => {
   try {
-    const documents = await Dealerships.find({ state: req.params.state });
+    const documents = await Dealerships.find({ state: req.params.state }); // Changed bracket notation to dot notation if applicable
     res.json(documents);
   } catch (error) {
     res.status(500).json({ error: 'Error fetching documents' });
@@ -91,25 +94,24 @@ app.get('/fetchDealer/:id', async (req, res) => {
 });
 
 // Express route to insert review
-app.post('/insert_review', express.raw({ type: '*/*' }), async (req, res) => {
+app.post('/insert_review', async (req, res) => { // Removed express.raw middleware as express.json() is already used
   try {
-    const data = JSON.parse(req.body);
+    const data = req.body; // Changed to use parsed JSON directly
     const documents = await Reviews.find().sort({ id: -1 });
-    let new_id = documents[0] ? documents[0]['id'] + 1 : 1; // Handle case if there are no documents
+    let new_id = documents[0] ? documents[0].id + 1 : 1; // Changed bracket notation to dot notation
 
     const review = new Reviews({
-      "id": new_id,
-      "name": data['name'],
-      "dealership": data['dealership'],
-      "review": data['review'],
-      "purchase": data['purchase'],
-      "purchase_date": data['purchase_date'],
-      "car_make": data['car_make'],
-      "car_model": data['car_model'],
-      "car_year": data['car_year'],
+      id: new_id, // Changed to dot notation
+      name: data.name, // Changed to dot notation
+      dealership: data.dealership, // Changed to dot notation
+      review: data.review, // Changed to dot notation
+      purchase: data.purchase, // Changed to dot notation
+      purchase_date: data.purchase_date, // Changed to dot notation
+      car_make: data.car_make, // Changed to dot notation
+      car_model: data.car_model, // Changed to dot notation
+      car_year: data.car_year, // Changed to dot notation
     });
 
-    
     const savedReview = await review.save();
     res.json(savedReview);
   } catch (error) {
@@ -124,7 +126,7 @@ app.put('/update_review/:id', async (req, res) => {
     const data = req.body;
 
     // Basic validation
-    if (!data.name || !data.dealership || !data.review) {
+    if (!data.name || !data.dealership || !data.review) { // Changed bracket notation to dot notation if applicable
       return res.status(400).json({ error: 'Missing required fields: name, dealership, review' });
     }
 
