@@ -5,7 +5,7 @@ ignore =
     E266,  
     E501,  
     W503,  
-    F403, 
+    F403,  
     F401   
 exclude =
     .git,
@@ -13,4 +13,4 @@ exclude =
     build,
     dist,
     node_modules,
-    djangoenv  
+    djangoenv 
