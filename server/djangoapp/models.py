@@ -42,4 +42,5 @@ class CarModel(models.Model):
     # Any other fields you would like to include
 
     def __str__(self):
-        return f"{self.car_make.name} {self.name}"  # String representation of CarMake and CarModel
+        # String representation of CarMake and CarModel
+        return f"{self.car_make.name} {self.name}"  

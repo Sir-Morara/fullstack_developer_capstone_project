@@ -104,11 +104,17 @@ def get_cars(request):
     car_models = CarModel.objects.select_related("car_make")
     cars = []
     for car_model in car_models:
-        cars.append({"CarModel": car_model.name, "CarMake": car_model.car_make.name})
+        cars.append(
+            {
+             "CarModel": car_model.name, 
+             "CarMake": car_model.car_make.name
+             }
+            )
     return JsonResponse({"CarModels": cars})
 
 
-# Update the `get_dealerships` render list of dealerships all by default, particular state if state is passed
+# Update the `get_dealerships` render list of dealerships 
+# all by default, particular state if state is passed
 def get_dealerships(request, state="All"):
     if state == "All":
         endpoint = "/fetchDealers"
@@ -163,7 +169,10 @@ def add_review(request):
         except Exception as e:
             # Handle errors during the posting process
             print(f"Error in posting review: {e}")
-            return JsonResponse({"status": 401, "message": "Error in posting review"})
+            return JsonResponse(
+                {"status": 401, "message": "Error in posting review"}
+            )
     else:
-        # Return unauthorized status if the user is not authenticated
+        # Return unauthorized status 
+        # if the user is not authenticated
         return JsonResponse({"status": 403, "message": "Unauthorized"})

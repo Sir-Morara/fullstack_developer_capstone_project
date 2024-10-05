@@ -17,14 +17,17 @@ def get_request(endpoint, **kwargs):
     params = ""
     if kwargs:
         for key, value in kwargs.items():
-            params += f"{key}={value}&"  # Using f-string for cleaner formatting
+            # Using f-string for cleaner formatting
+            params += f"{key}={value}&"  
     request_url = (
         backend_url + endpoint + "?" + params.strip("&")
     )  # Remove the last '&' character
     print(f"GET from {request_url}")  # Using f-string for cleaner formatting
     try:
         # Call the get method of requests library with URL and parameters
-        response = requests.get(request_url)
+        response = requests.get(
+            request_url
+            )
         response.raise_for_status()  # Raise an error for bad responses (4xx and 5xx)
         return response.json()  # Return the JSON response
     except requests.exceptions.RequestException as e:
