@@ -1,0 +1,36 @@
+# .pre-commit-config.yaml
+repos:
+  - repo: https://github.com/psf/black
+    rev: 23.3.0  # Use the latest version or the specific version you want
+    hooks:
+      - id: black
+        language_version: python3  # Adjust as needed
+
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 6.0.0  # Use the latest version or the specific version you want
+    hooks:
+      - id: flake8
+        additional_dependencies: [flake8-bugbear, flake8-docstrings]  # Optional: Add extra plugins if needed
+
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.12.0  # Use the latest version or the specific version you want
+    hooks:
+      - id: isort
+        name: isort
+        args: ['--profile', 'black']  # Use the black profile to ensure compatibility
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.991  # Use the latest version or the specific version you want
+    hooks:
+      - id: mypy
+        name: Mypy
+        types: [python]
+        additional_dependencies: [types-requests]  # Add any type stubs you may need
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.1.0  # Use the latest version or the specific version you want
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
