@@ -6,11 +6,14 @@ repos:
       - id: black
         language_version: python3  # Adjust as needed
 
-  - repo: https://github.com/pre-commit/mirrors-flake8
-    rev: v6.0.0  # Use the latest version or the specific version you want
+  - repo: local
     hooks:
       - id: flake8
-        additional_dependencies: [flake8-bugbear, flake8-docstrings]  # Optional: Add extra plugins if needed
+        name: flake8
+        entry: flake8
+        language: system
+        types: [python]
+        # Note: 'additional_dependencies' is not used for local hooks
 
   - repo: https://github.com/pre-commit/mirrors-isort
     rev: v5.12.0  # Use the latest version or the specific version you want
