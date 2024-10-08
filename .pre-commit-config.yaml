@@ -1,29 +1,22 @@
 # .pre-commit-config.yaml
 repos:
   - repo: https://github.com/psf/black
-    rev: 23.3.0  # Use the latest version or the specific version you want
+    rev: 23.3.0  # Specify the desired version
     hooks:
       - id: black
-        language_version: python3  # Adjust as needed
+        language_version: python3
 
-  - repo: local
+  - repo: https://github.com/Sir-Morara/pre-commit-hooks
+    rev: v1.0.0  # Use the tag you created in your custom hooks repo
     hooks:
       - id: flake8
-        name: flake8
-        entry: flake8
-        language: system
-        types: [python]
-        additional_dependencies: [flake8-bugbear, flake8-docstrings]
+
 
       - id: isort
-        name: isort
-        entry: isort
-        language: system
-        types: [python]
-        args: ['--profile', 'black']
+      
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.991  # Use the latest version or the specific version you want
+    rev: v0.991  # Specify the desired version
     hooks:
       - id: mypy
         name: Mypy
@@ -31,7 +24,7 @@ repos:
         additional_dependencies: [types-requests]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.1.0  # Use the latest version or the specific version you want
+    rev: v3.1.0  # Specify the desired version
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
