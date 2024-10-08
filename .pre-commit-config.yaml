@@ -10,16 +10,12 @@ repos:
     rev: v1.0.0  # Use the tag you created in your custom hooks repo
     hooks:
       - id: flake8
-
-
       - id: isort
-
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v0.991  # Specify the desired version
     hooks:
       - id: mypy
-      
         additional_dependencies: [types-requests]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
